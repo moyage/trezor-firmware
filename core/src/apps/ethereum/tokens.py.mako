@@ -12,8 +12,6 @@ def group_tokens(tokens):
     return r
 %>\
 
-UNKNOWN_TOKEN = (None, None, None, None)
-
 
 def token_by_chain_address(chain_id, address):
     if False:
@@ -27,4 +25,4 @@ def token_by_chain_address(chain_id, address):
             return (chain_id, address, ${black_repr(t.symbol)}, ${t.decimals})  # ${t.chain} / ${t.name.strip()}
         % endfor
 % endfor
-    return UNKNOWN_TOKEN
+    return (chain_id, address, "Wei UNKN", 0)

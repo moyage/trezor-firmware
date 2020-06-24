@@ -25,7 +25,8 @@ class TestEthereumTokens(unittest.TestCase):
 
         # invalid adress, invalid chain
         token = tokens.token_by_chain_address(999, b'\x00\xFF')
-        self.assertIs(token, tokens.UNKNOWN_TOKEN)
+        self.assertEqual(token[2], "Wei UNKN")
+        self.assertEqual(token[3], 0)
 
 
 if __name__ == '__main__':

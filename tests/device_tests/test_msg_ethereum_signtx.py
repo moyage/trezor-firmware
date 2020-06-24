@@ -25,6 +25,14 @@ from ..common import MNEMONIC12
 TO_ADDR = "0x1d1c328764a41bda0492b66baa30c4a339ff85ef"
 
 
+def input_flow_token(debug):
+    yield  # confirm amount + destination
+    debug.swipe_up()
+    debug.press_yes()
+    yield  # confirm transaction
+    debug.press_yes()
+
+
 @pytest.mark.altcoin
 @pytest.mark.ethereum
 class TestMsgEthereumSigntx:
@@ -38,6 +46,7 @@ class TestMsgEthereumSigntx:
                     messages.EthereumTxRequest(data_length=None),
                 ]
             )
+            client.set_input_flow(input_flow_token(client.debug))
 
             data = bytearray()
             # method id signalizing `transfer(address _to, uint256 _value)` function
@@ -124,6 +133,7 @@ class TestMsgEthereumSigntx:
                     messages.EthereumTxRequest(data_length=None),
                 ]
             )
+            client.set_input_flow(input_flow_token(client.debug))
 
             data = bytearray()
             # method id signalizing `transfer(address _to, uint256 _value)` function
@@ -140,7 +150,7 @@ class TestMsgEthereumSigntx:
                     "0000000000000000000000000000000000000000000000000000000000000123"
                 )
             )
-            # since this token is unknown trezor should display "unknown token value"
+            # since this token is unknown trezor should display the amount in wei
 
             sig_v, sig_r, sig_s = ethereum.sign_tx(
                 client,

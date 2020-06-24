@@ -3,8 +3,6 @@
 # flake8: noqa
 # fmt: off
 
-UNKNOWN_TOKEN = (None, None, None, None)
-
 
 def token_by_chain_address(chain_id, address):
     if False:
@@ -3489,4 +3487,4 @@ def token_by_chain_address(chain_id, address):
             return (chain_id, address, "DGT", 0)  # esn / DGT
         elif address == b"\x01\x46\xb9\xdc\xd9\xfb\x2a\xbc\x1b\x5b\x13\x6c\x28\xd2\x0d\x00\x37\x52\x69\x61":
             return (chain_id, address, "TOPM", 18)  # esn / TOPM
-    return UNKNOWN_TOKEN
+    return (chain_id, address, "Wei UNKN", 0)
