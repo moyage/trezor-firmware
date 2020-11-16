@@ -308,15 +308,10 @@ storage test:
 # Hardware
 hardware core btconly device test:
   stage: test
-  only:
-    - schedules  # nightly build
-    - /^legacy\//
-    - /^release\//
-    - /^secfix\//
-    - /^hw\//
   tags:
     - tpmb
-  needs: ["core fw btconly debug build"]
+  needs:
+    - core fw btconly debug build
   script:
     - cd ci/hardware_tests
     - nix-shell --run "cd ../.. && poetry install"
@@ -333,12 +328,6 @@ hardware core btconly device test:
 
 hardware legacy regular device test:
   stage: test
-  only:
-    - schedules  # nightly build
-    - /^legacy\//
-    - /^release\//
-    - /^secfix\//
-    - /^hw\//
   tags:
     - tpmb
   needs:
@@ -365,12 +354,6 @@ hardware legacy btconly device test:
   stage: test
   variables:
     TREZOR_PYTEST_SKIP_ALTCOINS: 1
-  only:
-    - schedules  # nightly build
-    - /^legacy\//
-    - /^release\//
-    - /^secfix\//
-    - /^hw\//
   tags:
     - tpmb
   needs:
