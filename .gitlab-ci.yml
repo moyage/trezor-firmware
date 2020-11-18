@@ -21,11 +21,8 @@ variables:
   DOCKER_TLS_CERTDIR: ""
 stages:
   - environment
-  - prebuild
-  - build
+#  - build
   - test
-  - posttest
-  - deploy
 
 before_script:
   - . $HOME/.nix-profile/etc/profile.d/nix.sh || true
@@ -35,8 +32,5 @@ before_script:
 
 include:
   - ci/environment.yml
-  - ci/prebuild.yml
-  - ci/build.yml
+#  - ci/build.yml
   - ci/test.yml
-  - ci/posttest.yml
-  - ci/deploy.yml

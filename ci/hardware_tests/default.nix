@@ -8,6 +8,7 @@ stdenv.mkDerivation rec {
     poetry
     libusb1
     dejavu_fonts
+    strace
   ];
   LD_LIBRARY_PATH = "${libusb1}/lib";
   NIX_ENFORCE_PURITY = 0;
