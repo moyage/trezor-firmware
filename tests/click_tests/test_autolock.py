@@ -46,7 +46,7 @@ def set_autolock_delay(device_handler, delay_ms):
     debug.input("1234")
 
     layout = debug.wait_layout()
-    assert f"auto-lock your device after {delay_ms // 1000} seconds" in layout.text
+    assert f"auto-lock your device after {delay_ms // 1000 // 60} minute" in layout.text
     debug.click(buttons.OK)
 
     layout = debug.wait_layout()
@@ -56,7 +56,7 @@ def set_autolock_delay(device_handler, delay_ms):
 
 @pytest.mark.setup_client(pin=PIN4)
 def test_autolock_interrupts_signing(device_handler):
-    set_autolock_delay(device_handler, 10_000)
+    set_autolock_delay(device_handler, 60_000)
 
     debug = device_handler.debuglink()
     # try to sign a transaction
@@ -90,7 +90,7 @@ def test_autolock_interrupts_signing(device_handler):
 @pytest.mark.xfail(reason="depends on #922")
 @pytest.mark.setup_client(pin=PIN4, passphrase=True)
 def test_autolock_passphrase_keyboard(device_handler):
-    set_autolock_delay(device_handler, 10_000)
+    set_autolock_delay(device_handler, 60_000)
     debug = device_handler.debuglink()
 
     # get address
@@ -110,7 +110,7 @@ def test_autolock_passphrase_keyboard(device_handler):
 
 @pytest.mark.setup_client(pin=PIN4)
 def test_dryrun_locks_at_number_of_words(device_handler):
-    set_autolock_delay(device_handler, 10_000)
+    set_autolock_delay(device_handler, 60_000)
     debug = device_handler.debuglink()
 
     device_handler.run(device.recover, dry_run=True)
@@ -141,7 +141,7 @@ def test_dryrun_locks_at_number_of_words(device_handler):
 
 @pytest.mark.setup_client(pin=PIN4)
 def test_dryrun_locks_at_word_entry(device_handler):
-    set_autolock_delay(device_handler, 10_000)
+    set_autolock_delay(device_handler, 60_000)
     debug = device_handler.debuglink()
 
     device_handler.run(device.recover, dry_run=True)
@@ -168,7 +168,7 @@ def test_dryrun_locks_at_word_entry(device_handler):
 
 @pytest.mark.setup_client(pin=PIN4)
 def test_dryrun_enter_word_slowly(device_handler):
-    set_autolock_delay(device_handler, 10_000)
+    set_autolock_delay(device_handler, 60_000)
     debug = device_handler.debuglink()
 
     device_handler.run(device.recover, dry_run=True)
@@ -187,7 +187,7 @@ def test_dryrun_enter_word_slowly(device_handler):
     # type the word OCEAN slowly
     assert layout.text == "Slip39Keyboard"
     for coords in buttons.type_word("ocea"):
-        time.sleep(9)
+        time.sleep(59)
         debug.click(coords)
     layout = debug.click(buttons.CONFIRM_WORD, wait=True)
     # should not have locked, even though we took 9 seconds to type each letter

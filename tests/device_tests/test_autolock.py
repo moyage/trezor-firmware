@@ -51,7 +51,7 @@ def set_autolock_delay(client, delay):
 
 
 def test_apply_auto_lock_delay(client):
-    set_autolock_delay(client, 10 * 1000)
+    set_autolock_delay(client, 60 * 1000)
 
     time.sleep(0.1)  # sleep less than auto-lock delay
     with client:
@@ -59,7 +59,7 @@ def test_apply_auto_lock_delay(client):
         client.set_expected_responses([messages.Address])
         get_test_address(client)
 
-    time.sleep(10.1)  # sleep more than auto-lock delay
+    time.sleep(60.1)  # sleep more than auto-lock delay
     with client:
         client.use_pin_sequence([PIN4])
         client.set_expected_responses([pin_request(client), messages.Address])
@@ -69,8 +69,7 @@ def test_apply_auto_lock_delay(client):
 @pytest.mark.parametrize(
     "seconds",
     [
-        10,  # 10 seconds, minimum
-        60,  # 1 minute
+        60,  # 1 minute, minimum
         123,  # 2 minutes
         3601,  # 1 hour
         7227,  # 2 hours
@@ -94,7 +93,7 @@ def test_autolock_default_value(client):
 @pytest.mark.skip_ui
 @pytest.mark.parametrize(
     "seconds",
-    [0, 1, 9, 536871, 2 ** 22],
+    [0, 1, 9, 10, 15, 59, 536871, 2 ** 22],
 )
 def test_apply_auto_lock_delay_out_of_range(client, seconds):
     with client:
@@ -113,7 +112,7 @@ def test_apply_auto_lock_delay_out_of_range(client, seconds):
 
 @pytest.mark.skip_t1
 def test_autolock_cancels_ui(client):
-    set_autolock_delay(client, 10 * 1000)
+    set_autolock_delay(client, 60 * 1000)
 
     resp = client.call_raw(
         messages.GetAddress(
@@ -128,7 +127,7 @@ def test_autolock_cancels_ui(client):
     # send an ack, do not read response
     client._raw_write(messages.ButtonAck())
     # sleep more than auto-lock delay
-    time.sleep(10.1)
+    time.sleep(60.1)
     resp = client._raw_read()
 
     assert isinstance(resp, messages.Failure)

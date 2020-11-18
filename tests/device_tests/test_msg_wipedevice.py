@@ -44,18 +44,18 @@ def test_wipe_device(client):
 def test_autolock_not_retained(client):
     with client:
         client.use_pin_sequence([PIN4])
-        device.apply_settings(client, auto_lock_delay_ms=10_000)
+        device.apply_settings(client, auto_lock_delay_ms=61_000)
 
-    assert client.features.auto_lock_delay_ms == 10_000
+    assert client.features.auto_lock_delay_ms == 61_000
 
     device.wipe(client)
-    assert client.features.auto_lock_delay_ms > 10_000
+    assert client.features.auto_lock_delay_ms > 61_000
 
     with client:
         client.use_pin_sequence([PIN4, PIN4])
         device.reset(client, skip_backup=True, pin_protection=True)
 
-    time.sleep(10.1)
+    time.sleep(61.1)
     with client:
         # after sleeping for the pre-wipe autolock amount, Trezor must still be unlocked
         client.set_expected_responses([messages.Address])
